@@ -3,6 +3,7 @@ import { Barlow, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
+import { checkUser } from "@/lib/checkUser";
 const inter = Inter({
   subsets: ["latin"],
 });
@@ -18,11 +19,12 @@ export const metadata: Metadata = {
     "Welcome to your store, your ultimate destination for seamless online shopping!",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await checkUser();
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
