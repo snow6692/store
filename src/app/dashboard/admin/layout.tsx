@@ -13,7 +13,7 @@ async function AdminDashboardLayout({ children }: { children: ReactNode }) {
   return (
     <main className="h-full w-full">
       <Sidebar isAdmin={true} />
-      <div className="ml-[300px] w-full">
+      <div className="ml-[300px]">
         {/* Header */}
         <Header />
         <div className="mt-[75px] w-full p-4">{children}</div>
