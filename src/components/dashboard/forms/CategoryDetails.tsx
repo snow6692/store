@@ -37,14 +37,16 @@ import { Input } from "@/components/ui/input";
 
 import { CategoryFormSchema } from "@/lib/schemas/category";
 import ImageUpload from "../shared/ImageUpload";
-
+import { upsertCategory } from "@/queries/category";
+import { v4 } from "uuid";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 interface CategoryDetailsProps {
   data?: Category;
 }
 
 const CategoryDetails: FC<CategoryDetailsProps> = ({ data }) => {
-  // Initializing necessary hooks
-
+  const router = useRouter();
   // Form hook for managing form state and validation
   const form = useForm<z.infer<typeof CategoryFormSchema>>({
     mode: "onChange", // Form validation mode
@@ -61,9 +63,42 @@ const CategoryDetails: FC<CategoryDetailsProps> = ({ data }) => {
   // Loading status based on form submission
   const isLoading = form.formState.isSubmitting;
 
+  useEffect(() => {
+    if (data) {
+      setTimeout(() => {
+        form.reset({
+          name: data.name,
+          image: [{ url: data.image }],
+          url: data.url,
+          featured: data.featured,
+        });
+      }, 0);
+    }
+  }, [data, form]);
+
   // Submit handler for form submission
   const handleSubmit = async (values: z.infer<typeof CategoryFormSchema>) => {
-    console.log(values);
+    try {
+      // Upsert the category data
+      const response = await upsertCategory({
+        id: data?.id ? data.id : v4(),
+        name: values.name,
+        image: values.image[0].url,
+        url: values.url,
+        featured: values.featured,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      toast.success(response.name + " Category added");
+
+      if (data?.id) {
+        router.refresh();
+      } else {
+        router.push("/dashboard/admin/categories");
+      }
+    } catch (error: any) {
+      toast.error("OOPS!" + error.toString());
+    }
   };
 
   return (

@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { checkUser } from "@/lib/checkUser";
+import { Toaster } from "sonner";
 const inter = Inter({
   subsets: ["latin"],
 });
@@ -28,7 +29,7 @@ export default async function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={` ${inter.className} ${barlow.variable}  antialiased`}>
+        <body className={` ${inter.className} ${barlow.variable} antialiased`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -36,6 +37,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>
