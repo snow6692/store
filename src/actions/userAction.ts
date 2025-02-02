@@ -13,3 +13,17 @@ export async function currentDbUser() {
     },
   });
 }
+
+export async function isAdmin() {
+  try {
+    const user = await currentDbUser();
+    if (!user) throw new Error("UnAuthenticated");
+    if (user.role !== "ADMIN")
+      throw new Error(
+        "UnAuthorized Access : Admin privileges required for Entry",
+      );
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+}

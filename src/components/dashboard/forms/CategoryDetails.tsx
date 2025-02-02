@@ -65,14 +65,12 @@ const CategoryDetails: FC<CategoryDetailsProps> = ({ data }) => {
 
   useEffect(() => {
     if (data) {
-      setTimeout(() => {
-        form.reset({
-          name: data.name,
-          image: [{ url: data.image }],
-          url: data.url,
-          featured: data.featured,
-        });
-      }, 0);
+      form.reset({
+        name: data.name,
+        image: [{ url: data.image }],
+        url: data.url,
+        featured: data.featured,
+      });
     }
   }, [data, form]);
 

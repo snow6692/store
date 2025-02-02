@@ -1,5 +1,5 @@
 "use server";
-import { currentDbUser } from "@/actions/userAction";
+import { currentDbUser, isAdmin } from "@/actions/userAction";
 import prisma from "@/lib/db";
 import { Category } from "@prisma/client";
 
@@ -60,3 +60,52 @@ export const upsertCategory = async (category: Category) => {
     throw error;
   }
 };
+
+// Function: getAllCategories
+// Description: Retrieves all categories from the database.
+// Permission Level: Public
+// Returns: Array of categories sorted by updatedAt date in descending order.
+
+export async function getAllCategories() {
+  const categories = await prisma.category.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+
+  return categories;
+}
+
+// Function: getCategory
+// Description: Retrieves a specific category from the database.
+// Access Level: Public
+// Parameters:
+//   - categoryId: The ID of the category to be retrieved.
+// Returns: Details of the requested category.
+
+export async function getCategory(categoryId: string) {
+  if (!categoryId) throw new Error("Please provide category ID.");
+
+  const category = await prisma.category.findUnique({
+    where: { id: categoryId },
+  });
+  return category;
+}
+
+// Function: deleteCategory
+// Description: Deletes a category from the database.
+// Permission Level: Admin only
+// Parameters:
+//   - categoryId: The ID of the category to be deleted.
+// Returns: Response indicating success or failure of the deletion operation.
+
+export async function deleteCategory(categoryId: string) {
+  const admin = await isAdmin();
+  if (!admin) throw new Error("");
+  if (!categoryId) throw new Error("Please provide category ID.");
+
+  const response = await prisma.category.delete({
+    where: {
+      id: categoryId,
+    },
+  });
+  return response;
+}
