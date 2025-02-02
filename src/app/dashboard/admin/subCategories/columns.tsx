@@ -1,12 +1,11 @@
 "use client";
 
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 // Custom components
-import CategoryDetails from "@/components/dashboard/forms/CategoryDetails";
 import CustomModal from "@/components/dashboard/shared/CustomModal";
 
 // UI components
@@ -45,15 +44,20 @@ import {
 } from "lucide-react";
 
 // Queries
-import { deleteCategory, getCategory } from "@/queries/category";
+import {
+  getAllCategories,
+} from "@/queries/category";
 
 // Tanstack React Table
 import { ColumnDef } from "@tanstack/react-table";
 
 // Prisma models
 import { Category } from "@prisma/client";
+import { SubCategoryWithCategoryType } from "@/lib/types";
+import SubCategoryDetails from "@/components/dashboard/forms/SubCategoryDetails";
+import { deleteSubCategory, getSubCategory } from "@/queries/subCategory";
 
-export const columns: ColumnDef<Category>[] = [
+export const columns: ColumnDef<SubCategoryWithCategoryType>[] = [
   {
     accessorKey: "image",
     header: "",
@@ -91,6 +95,13 @@ export const columns: ColumnDef<Category>[] = [
     },
   },
   {
+    accessorKey: "category",
+    header: "category",
+    cell: ({ row }) => {
+      return <span>{row.original.category.name}</span>;
+    },
+  },
+  {
     accessorKey: "featured",
     header: "Featured",
     cell: ({ row }) => {
@@ -117,7 +128,7 @@ export const columns: ColumnDef<Category>[] = [
 
 // Define props interface for CellActions component
 interface CellActionsProps {
-  rowData: Category;
+  rowData: SubCategoryWithCategoryType;
 }
 
 // CellActions component definition
@@ -126,6 +137,16 @@ const CellActions: React.FC<CellActionsProps> = ({ rowData }) => {
   const { setOpen, setClose } = useModal();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const categories = await getAllCategories();
+      setCategories(categories);
+    };
+    fetchCategories();
+  }, []);
 
   // Return null if rowData or rowData.id don't exist
   if (!rowData || !rowData.id) return null;
@@ -148,11 +169,14 @@ const CellActions: React.FC<CellActionsProps> = ({ rowData }) => {
                 // Custom modal component
                 <CustomModal>
                   {/* Store details component */}
-                  <CategoryDetails data={{ ...rowData }} />
+                  <SubCategoryDetails
+                    categories={categories}
+                    data={{ ...rowData }}
+                  />
                 </CustomModal>,
                 async () => {
                   return {
-                    rowData: await getCategory(rowData?.id),
+                    rowData: await getSubCategory(rowData?.id),
                   };
                 },
               );
@@ -164,7 +188,7 @@ const CellActions: React.FC<CellActionsProps> = ({ rowData }) => {
           <DropdownMenuSeparator />
           <AlertDialogTrigger asChild>
             <DropdownMenuItem className="flex gap-2" onClick={() => {}}>
-              <Trash size={15} /> Delete category
+              <Trash size={15} /> Delete subCategory
             </DropdownMenuItem>
           </AlertDialogTrigger>
         </DropdownMenuContent>
@@ -176,7 +200,7 @@ const CellActions: React.FC<CellActionsProps> = ({ rowData }) => {
           </AlertDialogTitle>
           <AlertDialogDescription className="text-left">
             This action cannot be undone. This will permanently delete the
-            category and related data.
+            subCategory and related data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex items-center">
@@ -186,8 +210,8 @@ const CellActions: React.FC<CellActionsProps> = ({ rowData }) => {
             className="mb-2 bg-destructive text-white hover:bg-destructive"
             onClick={async () => {
               setLoading(true);
-              await deleteCategory(rowData.id);
-              toast.success("The category has been deleted.");
+              await deleteSubCategory(rowData.id);
+              toast.success("The subCategory has been deleted.");
               setLoading(false);
               router.refresh();
               setClose();
@@ -200,4 +224,3 @@ const CellActions: React.FC<CellActionsProps> = ({ rowData }) => {
     </AlertDialog>
   );
 };
-

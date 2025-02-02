@@ -38,7 +38,7 @@ function ImageUpload({
 
   if (type === "profile") {
     return (
-      <div className="relative size-52 rounded-full border-2 border-white bg-gray-200 shadow-2xl">
+      <div className="relative z-50 size-52 rounded-full border-2 border-white bg-gray-200 shadow-2xl">
         {value.length > 0 && (
           <Image
             src={value[0]}

@@ -10,7 +10,7 @@ import {
   DialogDescription,
   DialogHeader,
 } from "@/components/ui/dialog";
-import { DialogTitle } from "@radix-ui/react-dialog";
+import { DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { VisuallyHidden } from "@/components/ui/VisuallyHidden"; // Import the VisuallyHidden component
 
@@ -34,7 +34,7 @@ const CustomModal = ({
     <Dialog open={isOpen || defaultOpen} onOpenChange={setClose}>
       <DialogContent
         className={cn(
-          "h-screen overflow-y-scroll bg-card md:h-fit md:max-h-[700px]",
+          "pointer-events-auto h-screen overflow-y-scroll bg-card md:h-fit md:max-h-[700px]",
           maxWidth,
         )}
       >
@@ -50,8 +50,8 @@ const CustomModal = ({
           )}
           {subheading && <DialogDescription>{subheading}</DialogDescription>}
 
-          {children}
         </DialogHeader>
+          {children}
       </DialogContent>
     </Dialog>
   );

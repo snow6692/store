@@ -3,7 +3,6 @@
 // Custom components
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import CustomModal from "../dashboard/shared/CustomModal";
 // Table components
 import {
   Table,
@@ -27,7 +26,6 @@ import {
 import { FilePlus2, Search } from "lucide-react";
 
 // Modal provider hook
-import { useModal } from "@/providers/ModalProvider";
 import Link from "next/link";
 
 // Props interface for the table component
@@ -37,6 +35,7 @@ interface DataTableProps<TData, TValue> {
   filterValue: string;
   actionButtonText?: React.ReactNode;
   modalChildren?: React.ReactNode;
+
   newTabLink?: string;
   searchPlaceholder: string;
   heading?: string;
@@ -48,16 +47,11 @@ export default function DataTable<TData, TValue>({
   columns,
   data,
   filterValue,
-  modalChildren,
-  actionButtonText,
   searchPlaceholder,
-  heading,
-  subheading,
   noHeader,
   newTabLink,
 }: DataTableProps<TData, TValue>) {
   // Modal state
-  const { setOpen } = useModal();
 
   // React table instance
   const table = useReactTable({
@@ -85,24 +79,6 @@ export default function DataTable<TData, TValue>({
           />
         </div>
         <div className="flex gap-x-2">
-          {modalChildren && (
-            <Button
-              className="flex- gap-2"
-              onClick={() => {
-                if (modalChildren)
-                  setOpen(
-                    <CustomModal
-                      heading={heading || ""}
-                      subheading={subheading || ""}
-                    >
-                      {modalChildren}
-                    </CustomModal>,
-                  );
-              }}
-            >
-              {actionButtonText}
-            </Button>
-          )}
           {newTabLink && (
             <Link href={newTabLink}>
               <Button variant="outline">

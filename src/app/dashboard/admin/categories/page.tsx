@@ -1,7 +1,6 @@
 import CategoryDetails from "@/components/dashboard/forms/CategoryDetails";
 import DataTable from "@/components/ui/DataTable";
 import { getAllCategories } from "@/queries/category";
-import { Plus } from "lucide-react";
 import { columns } from "./columns";
 
 async function AdminCategoriesPage() {
@@ -10,17 +9,13 @@ async function AdminCategoriesPage() {
   if (!categories) return null;
   return (
     <DataTable
-    
+    newTabLink="/dashboard/admin/categories/new"
       columns={columns}
       searchPlaceholder="Search category name..."
       data={categories}
       filterValue="name"
       modalChildren={<CategoryDetails />}
-      actionButtonText={
-        <>
-          <Plus size={15} /> Create category
-        </>
-      }
+  
     />
   );
 }
