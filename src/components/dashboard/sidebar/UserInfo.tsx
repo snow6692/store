@@ -26,7 +26,7 @@ function UserInfo({ user }: IProps) {
             <div className="flex flex-col gap-y-1">
               {user?.name}
               <span className="text-xs text-muted-foreground">
-                {user?.email}
+                {user?.email.split("@")[0]}
               </span>
               <span className="w-fit">
                 <Badge variant={"secondary"} className="capitalize">

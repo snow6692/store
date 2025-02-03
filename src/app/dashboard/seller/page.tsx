@@ -1,6 +1,19 @@
-import React from "react";
+import { currentDbUser } from "@/actions/userAction";
+import prisma from "@/lib/db";
+import { redirect } from "next/navigation";
+async function page() {
+  const user = await currentDbUser();
+  if (!user) redirect("/");
+  if (user?.role !== "SELLER") redirect("/");
+  const stores = await prisma.store.findMany({
+    where: { userId: user.id },
+  });
 
-function page() {
+  if (stores.length === 0) {
+    redirect("/dashboard/seller/stores/new");
+  }
+
+  redirect(`/dashboard/seller/stores/${stores[0].url}`);
   return <div>page</div>;
 }
 
