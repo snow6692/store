@@ -1,7 +1,7 @@
 import SubCategoryDetails from "@/components/dashboard/forms/SubCategoryDetails";
 import DataTable from "@/components/ui/DataTable";
-import { getAllCategories } from "@/queries/category";
-import { getAllSubCategories } from "@/queries/subCategory";
+import { getAllCategories } from "@/actions/category";
+import { getAllSubCategories } from "@/actions/subCategory";
 import React from "react";
 import { columns } from "./columns";
 

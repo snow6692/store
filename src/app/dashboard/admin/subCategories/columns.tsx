@@ -44,9 +44,7 @@ import {
 } from "lucide-react";
 
 // Queries
-import {
-  getAllCategories,
-} from "@/queries/category";
+import { getAllCategories } from "@/actions/category";
 
 // Tanstack React Table
 import { ColumnDef } from "@tanstack/react-table";
@@ -55,7 +53,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Category } from "@prisma/client";
 import { SubCategoryWithCategoryType } from "@/lib/types";
 import SubCategoryDetails from "@/components/dashboard/forms/SubCategoryDetails";
-import { deleteSubCategory, getSubCategory } from "@/queries/subCategory";
+import { deleteSubCategory, getSubCategory } from "@/actions/subCategory";
 
 export const columns: ColumnDef<SubCategoryWithCategoryType>[] = [
   {

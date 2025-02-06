@@ -37,7 +37,7 @@ import { Input } from "@/components/ui/input";
 
 import { CategoryFormSchema } from "@/lib/schemas/category";
 import ImageUpload from "../shared/ImageUpload";
-import { upsertCategory } from "@/queries/category";
+import { upsertCategory } from "@/actions/category";
 import { v4 } from "uuid";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";

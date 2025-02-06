@@ -1,4 +1,4 @@
-import { getAllSubCategories } from "@/queries/subCategory";
+import { getAllSubCategories } from "@/actions/subCategory";
 import { Prisma } from "@prisma/client";
 
 export interface DashboardSidebarMenuInterface {

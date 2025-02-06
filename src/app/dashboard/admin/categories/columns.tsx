@@ -45,7 +45,7 @@ import {
 } from "lucide-react";
 
 // Queries
-import { deleteCategory, getCategory } from "@/queries/category";
+import { deleteCategory, getCategory } from "@/actions/category";
 
 // Tanstack React Table
 import { ColumnDef } from "@tanstack/react-table";
@@ -200,4 +200,3 @@ const CellActions: React.FC<CellActionsProps> = ({ rowData }) => {
     </AlertDialog>
   );
 };
-

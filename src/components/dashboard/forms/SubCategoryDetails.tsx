@@ -40,7 +40,7 @@ import ImageUpload from "../shared/ImageUpload";
 import { v4 } from "uuid";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { upsertSubCategory } from "@/queries/subCategory";
+import { upsertSubCategory } from "@/actions/subCategory";
 import {
   Select,
   SelectContent,
